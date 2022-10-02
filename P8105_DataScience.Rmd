@@ -1,0 +1,32 @@
+---
+title: "P8105 HW2"
+author: "Thirsten Stockton"
+date: "2022-10-02"
+output: github_document
+---
+
+# Problem 1
+
+***Importing and Cleaning Data***
+
+
+LOADING PACKAGES AND SETTING PRINT OPTIONS FOR TIBBLES
+
+```{r, message= FALSE}
+
+library(tidyverse)
+library(dbplyr)
+options(tibble.print_min = 5)
+
+```
+
+
+BRINGING IN OUR DATASET
+
+```{r}
+
+nyc_transit_data = read_csv(file = "./NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+
+nyc_transit_data
+
+```
