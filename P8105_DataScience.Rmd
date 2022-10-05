@@ -42,6 +42,7 @@ nyc_transit_data =
    mutate(
      entry = ifelse(entry == "YES", TRUE, FALSE))
 
-skimr::skim(nyc_transit_data)
-
+nyc_transit_data
 ```
+
+This dataset contains variables pertaining to subway line, station name, station latitude, station longitude, Route#, entry, vending, entrance type and ada compliance. So far, the csv file has been read in, column types where changed for "Route" variables that were coded as numeric, the data set was restricted to the above variables, and entry was changed to a logical variable. The dataframe dimensions are 19x1868. The data is not tidy because the "Route" variables need to be changed from wide format to long format.

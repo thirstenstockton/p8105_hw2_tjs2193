@@ -36,54 +36,28 @@ nyc_transit_data =
    mutate(
      entry = ifelse(entry == "YES", TRUE, FALSE))
 
-skimr::skim(nyc_transit_data)
+nyc_transit_data
 ```
 
-|                                                  |                  |
-|:-------------------------------------------------|:-----------------|
-| Name                                             | nyc_transit_data |
-| Number of rows                                   | 1868             |
-| Number of columns                                | 19               |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |                  |
-| Column type frequency:                           |                  |
-| character                                        | 15               |
-| logical                                          | 2                |
-| numeric                                          | 2                |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |                  |
-| Group variables                                  | None             |
+    ## # A tibble: 1,868 × 19
+    ##   line  stati…¹ stati…² stati…³ route1 route2 route3 route4 route5 route6 route7
+    ##   <chr> <chr>     <dbl>   <dbl> <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr> 
+    ## 1 4 Av… 25th St    40.7   -74.0 R      <NA>   <NA>   <NA>   <NA>   <NA>   <NA>  
+    ## 2 4 Av… 25th St    40.7   -74.0 R      <NA>   <NA>   <NA>   <NA>   <NA>   <NA>  
+    ## 3 4 Av… 36th St    40.7   -74.0 N      R      <NA>   <NA>   <NA>   <NA>   <NA>  
+    ## 4 4 Av… 36th St    40.7   -74.0 N      R      <NA>   <NA>   <NA>   <NA>   <NA>  
+    ## 5 4 Av… 36th St    40.7   -74.0 N      R      <NA>   <NA>   <NA>   <NA>   <NA>  
+    ## # … with 1,863 more rows, 8 more variables: route8 <chr>, route9 <chr>,
+    ## #   route10 <chr>, route11 <chr>, entry <lgl>, vending <chr>,
+    ## #   entrance_type <chr>, ada <lgl>, and abbreviated variable names
+    ## #   ¹​station_name, ²​station_latitude, ³​station_longitude
+    ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
-Data summary
-
-**Variable type: character**
-
-| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
-|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
-| line          |         0 |          1.00 |   5 |  17 |     0 |       36 |          0 |
-| station_name  |         0 |          1.00 |   4 |  39 |     0 |      356 |          0 |
-| route1        |         0 |          1.00 |   1 |   2 |     0 |       24 |          0 |
-| route2        |       848 |          0.55 |   1 |   2 |     0 |       20 |          0 |
-| route3        |      1374 |          0.26 |   1 |   2 |     0 |       18 |          0 |
-| route4        |      1547 |          0.17 |   1 |   1 |     0 |       13 |          0 |
-| route5        |      1630 |          0.13 |   1 |   1 |     0 |       12 |          0 |
-| route6        |      1741 |          0.07 |   1 |   1 |     0 |        7 |          0 |
-| route7        |      1788 |          0.04 |   1 |   2 |     0 |        7 |          0 |
-| route8        |      1820 |          0.03 |   1 |   1 |     0 |        3 |          0 |
-| route9        |      1840 |          0.01 |   1 |   1 |     0 |        2 |          0 |
-| route10       |      1845 |          0.01 |   1 |   1 |     0 |        1 |          0 |
-| route11       |      1845 |          0.01 |   1 |   1 |     0 |        1 |          0 |
-| vending       |         0 |          1.00 |   2 |   3 |     0 |        2 |          0 |
-| entrance_type |         0 |          1.00 |   4 |   9 |     0 |        7 |          0 |
-
-**Variable type: logical**
-
-| skim_variable | n_missing | complete_rate | mean | count               |
-|:--------------|----------:|--------------:|-----:|:--------------------|
-| entry         |         0 |             1 | 0.94 | TRU: 1753, FAL: 115 |
-| ada           |         0 |             1 | 0.25 | FAL: 1400, TRU: 468 |
-
-**Variable type: numeric**
-
-| skim_variable     | n_missing | complete_rate |   mean |   sd |     p0 |    p25 |    p50 |    p75 |   p100 | hist  |
-|:------------------|----------:|--------------:|-------:|-----:|-------:|-------:|-------:|-------:|-------:|:------|
-| station_latitude  |         0 |             1 |  40.73 | 0.07 |  40.58 |  40.69 |  40.73 |  40.77 |  40.90 | ▂▅▇▃▂ |
-| station_longitude |         0 |             1 | -73.94 | 0.06 | -74.03 | -73.99 | -73.96 | -73.91 | -73.76 | ▇▆▃▂▁ |
+This dataset contains variables pertaining to subway line, station name,
+station latitude, station longitude, Route#, entry, vending, entrance
+type and ada compliance. So far, the csv file has been read in, column
+types where changed for “Route” variables that were coded as numeric,
+the data set was restricted to the above variables, and entry was
+changed to a logical variable. The dataframe dimensions are 19x1868. The
+data is not tidy because the “Route” variables need to be changed from
+wide format to long format.
