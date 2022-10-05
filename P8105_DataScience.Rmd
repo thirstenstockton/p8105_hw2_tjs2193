@@ -105,7 +105,9 @@ nyc_transit_data %>%
 
 ``` {r}
 trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
-    sheet = "Mr. Trash Wheel")
+    sheet = "Mr. Trash Wheel") %>%
+      janitor::clean_names() %>%
+        drop_na (dumpster)
 
 skimr::skim(trash_wheel_df)
 ```
