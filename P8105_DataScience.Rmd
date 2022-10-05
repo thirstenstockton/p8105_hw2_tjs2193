@@ -101,13 +101,30 @@ nyc_transit_data %>%
 
 # Problem 2
 
-??read_xl
+Mr. Trash Wheel
 
-``` {r}
+``` {r, message = FALSE}
+
 trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
     sheet = "Mr. Trash Wheel") %>%
       janitor::clean_names() %>%
         drop_na (dumpster)
 
-skimr::skim(trash_wheel_df)
+trash_wheel_df
+  
 ```
+Professor Trash Wheel
+
+``` {r}
+
+p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
+    sheet = "Professor Trash Wheel") %>%
+      janitor::clean_names() %>%
+        drop_na (dumpster)
+         
+  
+p_trash_wheel_df
+```
+?read_excel
+***Having issues locating "sports_balls"***
+

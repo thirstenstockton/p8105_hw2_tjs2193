@@ -162,71 +162,56 @@ nyc_transit_data %>%
 
 # Problem 2
 
-??read_xl
+Mr. Trash Wheel
 
 ``` r
 trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
     sheet = "Mr. Trash Wheel") %>%
       janitor::clean_names() %>%
         drop_na (dumpster)
+
+trash_wheel_df
 ```
 
-    ## New names:
-    ## • `` -> `...15`
-    ## • `` -> `...16`
+    ## # A tibble: 547 × 16
+    ##   dumpster month year  date                weight_tons volume_…¹ plast…² polys…³
+    ##      <dbl> <chr> <chr> <dttm>                    <dbl>     <dbl>   <dbl>   <dbl>
+    ## 1        1 May   2014  2014-05-16 00:00:00        4.31        18    1450    1820
+    ## 2        2 May   2014  2014-05-16 00:00:00        2.74        13    1120    1030
+    ## 3        3 May   2014  2014-05-16 00:00:00        3.45        15    2450    3100
+    ## 4        4 May   2014  2014-05-17 00:00:00        3.1         15    2380    2730
+    ## 5        5 May   2014  2014-05-17 00:00:00        4.06        18     980     870
+    ## # … with 542 more rows, 8 more variables: cigarette_butts <dbl>,
+    ## #   glass_bottles <dbl>, grocery_bags <dbl>, chip_bags <dbl>,
+    ## #   sports_balls <dbl>, homes_powered <dbl>, x15 <lgl>, x16 <lgl>, and
+    ## #   abbreviated variable names ¹​volume_cubic_yards, ²​plastic_bottles,
+    ## #   ³​polystyrene
+    ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
+
+Professor Trash Wheel
 
 ``` r
-skimr::skim(trash_wheel_df)
+p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
+    sheet = "Professor Trash Wheel") %>%
+      janitor::clean_names() %>%
+        drop_na (dumpster)
+         
+  
+p_trash_wheel_df
 ```
 
-|                                                  |                |
-|:-------------------------------------------------|:---------------|
-| Name                                             | trash_wheel_df |
-| Number of rows                                   | 547            |
-| Number of columns                                | 16             |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |                |
-| Column type frequency:                           |                |
-| character                                        | 2              |
-| logical                                          | 2              |
-| numeric                                          | 11             |
-| POSIXct                                          | 1              |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |                |
-| Group variables                                  | None           |
+    ## # A tibble: 94 × 13
+    ##   dumpster month     year date                weight_t…¹ volum…² plast…³ polys…⁴
+    ##      <dbl> <chr>    <dbl> <dttm>                   <dbl>   <dbl>   <dbl>   <dbl>
+    ## 1        1 January   2017 2017-01-02 00:00:00       1.79      15    1950    6080
+    ## 2        2 January   2017 2017-01-30 00:00:00       1.58      15    9540   11230
+    ## 3        3 February  2017 2017-02-26 00:00:00       2.32      18    8350    9210
+    ## 4        4 February  2017 2017-02-26 00:00:00       3.72      15    8590    1030
+    ## 5        5 February  2017 2017-02-28 00:00:00       1.45      15    7830    9950
+    ## # … with 89 more rows, 5 more variables: cigarette_butts <dbl>,
+    ## #   glass_bottles <dbl>, grocery_bags <dbl>, chip_bags <dbl>,
+    ## #   homes_powered <dbl>, and abbreviated variable names ¹​weight_tons,
+    ## #   ²​volume_cubic_yards, ³​plastic_bottles, ⁴​polystyrene
+    ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
-Data summary
-
-**Variable type: character**
-
-| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
-|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
-| month         |         0 |             1 |   3 |   9 |     0 |       13 |          0 |
-| year          |         0 |             1 |   4 |   4 |     0 |        9 |          0 |
-
-**Variable type: logical**
-
-| skim_variable | n_missing | complete_rate | mean | count |
-|:--------------|----------:|--------------:|-----:|:------|
-| x15           |       547 |             0 |  NaN | :     |
-| x16           |       547 |             0 |  NaN | :     |
-
-**Variable type: numeric**
-
-| skim_variable      | n_missing | complete_rate |     mean |       sd |     p0 |     p25 |     p50 |      p75 |      p100 | hist  |
-|:-------------------|----------:|--------------:|---------:|---------:|-------:|--------:|--------:|---------:|----------:|:------|
-| dumpster           |         0 |          1.00 |   274.00 |   158.05 |   1.00 |  137.50 |  274.00 |   410.50 |    547.00 | ▇▇▇▇▇ |
-| weight_tons        |         0 |          1.00 |     3.20 |     0.75 |   0.78 |    2.71 |    3.19 |     3.72 |      5.62 | ▁▃▇▅▁ |
-| volume_cubic_yards |         0 |          1.00 |    15.33 |     1.38 |   7.00 |   15.00 |   15.00 |    15.00 |     20.00 | ▁▁▁▇▂ |
-| plastic_bottles    |         0 |          1.00 |  1958.49 |  1063.82 | 210.00 |  980.00 | 1880.00 |  2740.00 |   5960.00 | ▇▇▅▁▁ |
-| polystyrene        |         0 |          1.00 |  1649.08 |  1218.77 |  48.00 |  695.00 | 1250.00 |  2480.00 |   6540.00 | ▇▅▃▁▁ |
-| cigarette_butts    |         0 |          1.00 | 20925.08 | 30215.86 | 900.00 | 4000.00 | 7000.00 | 26500.00 | 310000.00 | ▇▁▁▁▁ |
-| glass_bottles      |         0 |          1.00 |    21.65 |    16.40 |   0.00 |   10.00 |   18.00 |    31.00 |    110.00 | ▇▃▁▁▁ |
-| grocery_bags       |         0 |          1.00 |   965.53 |   844.77 |  24.00 |  330.00 |  680.00 |  1370.00 |   3750.00 | ▇▃▂▁▁ |
-| chip_bags          |         0 |          1.00 |  1418.59 |   921.99 | 180.00 |  740.00 | 1100.00 |  1980.00 |   5085.00 | ▇▃▂▁▁ |
-| sports_balls       |         0 |          1.00 |    12.58 |     9.27 |   0.00 |    6.00 |   11.00 |    18.00 |     56.00 | ▇▅▂▁▁ |
-| homes_powered      |        61 |          0.89 |    45.98 |    21.42 |   0.00 |   39.54 |   51.17 |    59.13 |     93.67 | ▂▂▇▆▁ |
-
-**Variable type: POSIXct**
-
-| skim_variable | n_missing | complete_rate | min        | max        | median     | n_unique |
-|:--------------|----------:|--------------:|:-----------|:-----------|:-----------|---------:|
-| date          |         0 |             1 | 1900-01-20 | 2022-07-29 | 2018-07-18 |      331 |
+?read_excel ***Having issues locating “sports_balls”***
