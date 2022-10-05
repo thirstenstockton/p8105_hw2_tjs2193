@@ -35,23 +35,7 @@ nyc_transit_data =
     ada)%>%
    mutate(
      entry = ifelse(entry == "YES", TRUE, FALSE))
-
-nyc_transit_data
 ```
-
-    ## # A tibble: 1,868 × 19
-    ##   line  stati…¹ stati…² stati…³ route1 route2 route3 route4 route5 route6 route7
-    ##   <chr> <chr>     <dbl>   <dbl> <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr> 
-    ## 1 4 Av… 25th St    40.7   -74.0 R      <NA>   <NA>   <NA>   <NA>   <NA>   <NA>  
-    ## 2 4 Av… 25th St    40.7   -74.0 R      <NA>   <NA>   <NA>   <NA>   <NA>   <NA>  
-    ## 3 4 Av… 36th St    40.7   -74.0 N      R      <NA>   <NA>   <NA>   <NA>   <NA>  
-    ## 4 4 Av… 36th St    40.7   -74.0 N      R      <NA>   <NA>   <NA>   <NA>   <NA>  
-    ## 5 4 Av… 36th St    40.7   -74.0 N      R      <NA>   <NA>   <NA>   <NA>   <NA>  
-    ## # … with 1,863 more rows, 8 more variables: route8 <chr>, route9 <chr>,
-    ## #   route10 <chr>, route11 <chr>, entry <lgl>, vending <chr>,
-    ## #   entrance_type <chr>, ada <lgl>, and abbreviated variable names
-    ## #   ¹​station_name, ²​station_latitude, ³​station_longitude
-    ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
 This dataset contains variables pertaining to subway line, station name,
 station latitude, station longitude, Route#, entry, vending, entrance
@@ -61,3 +45,58 @@ the data set was restricted to the above variables, and entry was
 changed to a logical variable. The dataframe dimensions are 19x1868. The
 data is not tidy because the “Route” variables need to be changed from
 wide format to long format.
+
+***Questions***
+
+How many distinct stations are there? Note that stations are identified
+both by name and by line (e.g. 125th St 8th Avenue; 125st Broadway;
+125st Lenox); the distinct function may be useful here. ***465***
+
+``` r
+nyc_transit_data %>% 
+  select(station_name, line) %>% 
+    distinct
+```
+
+    ## # A tibble: 465 × 2
+    ##   station_name line    
+    ##   <chr>        <chr>   
+    ## 1 25th St      4 Avenue
+    ## 2 36th St      4 Avenue
+    ## 3 45th St      4 Avenue
+    ## 4 53rd St      4 Avenue
+    ## 5 59th St      4 Avenue
+    ## # … with 460 more rows
+    ## # ℹ Use `print(n = ...)` to see more rows
+
+How many stations are ADA compliant? ***84***
+
+``` r
+nyc_transit_data %>% 
+  filter(ada == TRUE) %>% 
+    select(station_name, line) %>% 
+      distinct
+```
+
+    ## # A tibble: 84 × 2
+    ##   station_name             line           
+    ##   <chr>                    <chr>          
+    ## 1 Atlantic Av-Barclays Ctr 4 Avenue       
+    ## 2 DeKalb Av                4 Avenue       
+    ## 3 Pacific St               4 Avenue       
+    ## 4 Grand Central            42nd St Shuttle
+    ## 5 34th St                  6 Avenue       
+    ## # … with 79 more rows
+    ## # ℹ Use `print(n = ...)` to see more rows
+
+What proportion of station entrances / exits without vending allow
+entrance? ***37.7%***
+
+``` r
+nyc_transit_data %>% 
+  filter(vending == "NO") %>% 
+    pull(entry) %>% 
+      mean
+```
+
+    ## [1] 0.3770492

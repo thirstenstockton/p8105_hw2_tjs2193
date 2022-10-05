@@ -42,7 +42,34 @@ nyc_transit_data =
    mutate(
      entry = ifelse(entry == "YES", TRUE, FALSE))
 
-nyc_transit_data
 ```
 
 This dataset contains variables pertaining to subway line, station name, station latitude, station longitude, Route#, entry, vending, entrance type and ada compliance. So far, the csv file has been read in, column types where changed for "Route" variables that were coded as numeric, the data set was restricted to the above variables, and entry was changed to a logical variable. The dataframe dimensions are 19x1868. The data is not tidy because the "Route" variables need to be changed from wide format to long format.
+
+***Questions***
+
+How many distinct stations are there? Note that stations are identified both by name and by line (e.g. 125th St 8th Avenue; 125st Broadway; 125st Lenox); the distinct function may be useful here. ***465***
+
+```{r}
+nyc_transit_data %>% 
+  select(station_name, line) %>% 
+    distinct
+```
+
+How many stations are ADA compliant? ***84***
+
+```{r}
+nyc_transit_data %>% 
+  filter(ada == TRUE) %>% 
+    select(station_name, line) %>% 
+      distinct
+```
+
+What proportion of station entrances / exits without vending allow entrance? ***37.7%***
+
+```{r}
+nyc_transit_data %>% 
+  filter(vending == "NO") %>% 
+    pull(entry) %>% 
+      mean
+```
