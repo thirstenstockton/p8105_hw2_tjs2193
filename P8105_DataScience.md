@@ -126,7 +126,7 @@ nyc_transit_data %>%
     ## # ℹ Use `print(n = ...)` to see more rows
 
 Reformatted Data: Distinct stations that serve the A train that are ada
-compliant ***60***
+compliant ***17***
 
 ``` r
 nyc_transit_data %>% 
@@ -159,3 +159,72 @@ nyc_transit_data %>%
     ## 15 Euclid Av                     Fulton          
     ## 16 Franklin Av                   Fulton          
     ## 17 Howard Beach                  Rockaway
+
+# Problem 2
+
+??read_xl
+
+``` r
+trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
+    sheet = "Mr. Trash Wheel")
+```
+
+    ## New names:
+    ## • `` -> `...15`
+    ## • `` -> `...16`
+
+``` r
+skimr::skim(trash_wheel_df)
+```
+
+|                                                  |                |
+|:-------------------------------------------------|:---------------|
+| Name                                             | trash_wheel_df |
+| Number of rows                                   | 548            |
+| Number of columns                                | 16             |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |                |
+| Column type frequency:                           |                |
+| character                                        | 2              |
+| logical                                          | 2              |
+| numeric                                          | 11             |
+| POSIXct                                          | 1              |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |                |
+| Group variables                                  | None           |
+
+Data summary
+
+**Variable type: character**
+
+| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
+|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
+| Month         |         1 |             1 |   3 |   9 |     0 |       13 |          0 |
+| Year          |         1 |             1 |   4 |   4 |     0 |        9 |          0 |
+
+**Variable type: logical**
+
+| skim_variable | n_missing | complete_rate | mean | count |
+|:--------------|----------:|--------------:|-----:|:------|
+| …15           |       548 |             0 |  NaN | :     |
+| …16           |       548 |             0 |  NaN | :     |
+
+**Variable type: numeric**
+
+| skim_variable        | n_missing | complete_rate |     mean |        sd |     p0 |     p25 |     p50 |      p75 |        p100 | hist  |
+|:---------------------|----------:|--------------:|---------:|----------:|-------:|--------:|--------:|---------:|------------:|:------|
+| Dumpster             |         1 |          1.00 |   274.00 |    158.05 |   1.00 |  137.50 |  274.00 |   410.50 |      547.00 | ▇▇▇▇▇ |
+| Weight (tons)        |         0 |          1.00 |     6.38 |     74.55 |   0.78 |    2.71 |    3.19 |     3.73 |     1748.36 | ▇▁▁▁▁ |
+| Volume (cubic yards) |         0 |          1.00 |    30.60 |    357.54 |   7.00 |   15.00 |   15.00 |    15.00 |     8385.00 | ▇▁▁▁▁ |
+| Plastic Bottles      |         0 |          1.00 |  3909.84 |  45692.15 | 210.00 |  980.00 | 1880.00 |  2745.00 |  1071295.00 | ▇▁▁▁▁ |
+| Polystyrene          |         0 |          1.00 |  3292.14 |  38482.28 |  48.00 |  702.50 | 1265.00 |  2500.00 |   902045.00 | ▇▁▁▁▁ |
+| Cigarette Butts      |         0 |          1.00 | 41773.80 | 488988.61 | 900.00 | 4000.00 | 7000.00 | 27000.00 | 11446020.00 | ▇▁▁▁▁ |
+| Glass Bottles        |         0 |          1.00 |    43.23 |    505.29 |   0.00 |   10.00 |   18.00 |    31.00 |    11844.00 | ▇▁▁▁▁ |
+| Grocery Bags         |         0 |          1.00 |  1927.54 |  22535.84 |  24.00 |  330.00 |  684.00 |  1377.50 |   528146.00 | ▇▁▁▁▁ |
+| Chip Bags            |         0 |          1.00 |  2832.00 |  33099.97 | 180.00 |  740.00 | 1100.00 |  1982.00 |   775969.00 | ▇▁▁▁▁ |
+| Sports Balls         |         0 |          1.00 |    25.10 |    293.45 |   0.00 |    6.00 |   11.00 |    18.00 |     6878.60 | ▇▁▁▁▁ |
+| Homes Powered\*      |        61 |          0.89 |    91.76 |   1010.65 |   0.00 |   39.58 |   51.17 |    59.33 |    22344.00 | ▇▁▁▁▁ |
+
+**Variable type: POSIXct**
+
+| skim_variable | n_missing | complete_rate | min        | max        | median     | n_unique |
+|:--------------|----------:|--------------:|:-----------|:-----------|:-----------|---------:|
+| Date          |         1 |             1 | 1900-01-20 | 2022-07-29 | 2018-07-18 |      331 |

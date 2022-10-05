@@ -86,7 +86,7 @@ nyc_transit_data %>%
   distinct
 ```
 
-Reformatted Data: Distinct stations that serve the A train that are ada compliant ***60***
+Reformatted Data: Distinct stations that serve the A train that are ada compliant ***17***
 
 ```{r}
 nyc_transit_data %>% 
@@ -97,4 +97,15 @@ nyc_transit_data %>%
   filter(route == "A", ada == TRUE) %>% 
   select(station_name, line) %>% 
   distinct
+```
+
+# Problem 2
+
+??read_xl
+
+``` {r}
+trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
+    sheet = "Mr. Trash Wheel")
+
+skimr::skim(trash_wheel_df)
 ```
