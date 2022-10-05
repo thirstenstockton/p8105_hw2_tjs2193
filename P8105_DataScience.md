@@ -100,3 +100,62 @@ nyc_transit_data %>%
 ```
 
     ## [1] 0.3770492
+
+Reformatted Data: Distinct stations that serve the A train ***60***
+
+``` r
+nyc_transit_data %>% 
+  pivot_longer(
+    route1:route11,
+    names_to = "route_num",
+    values_to = "route") %>% 
+  filter(route == "A") %>% 
+  select(station_name, line, route_num) %>% 
+  distinct
+```
+
+    ## # A tibble: 60 × 3
+    ##   station_name                  line            route_num
+    ##   <chr>                         <chr>           <chr>    
+    ## 1 Times Square                  42nd St Shuttle route1   
+    ## 2 125th St                      8 Avenue        route1   
+    ## 3 145th St                      8 Avenue        route1   
+    ## 4 14th St                       8 Avenue        route1   
+    ## 5 168th St - Washington Heights 8 Avenue        route1   
+    ## # … with 55 more rows
+    ## # ℹ Use `print(n = ...)` to see more rows
+
+Reformatted Data: Distinct stations that serve the A train that are ada
+compliant ***60***
+
+``` r
+nyc_transit_data %>% 
+  pivot_longer(
+    route1:route11,
+    names_to = "route_num",
+    values_to = "route") %>% 
+  filter(route == "A", ada == TRUE) %>% 
+  select(station_name, line) %>% 
+  distinct
+```
+
+    ## # A tibble: 17 × 2
+    ##    station_name                  line            
+    ##    <chr>                         <chr>           
+    ##  1 14th St                       8 Avenue        
+    ##  2 168th St - Washington Heights 8 Avenue        
+    ##  3 175th St                      8 Avenue        
+    ##  4 34th St                       8 Avenue        
+    ##  5 42nd St                       8 Avenue        
+    ##  6 59th St                       8 Avenue        
+    ##  7 Inwood - 207th St             8 Avenue        
+    ##  8 West 4th St                   8 Avenue        
+    ##  9 World Trade Center            8 Avenue        
+    ## 10 Times Square-42nd St          Broadway        
+    ## 11 59th St-Columbus Circle       Broadway-7th Ave
+    ## 12 Times Square                  Broadway-7th Ave
+    ## 13 8th Av                        Canarsie        
+    ## 14 Franklin Av                   Franklin        
+    ## 15 Euclid Av                     Fulton          
+    ## 16 Franklin Av                   Fulton          
+    ## 17 Howard Beach                  Rockaway
