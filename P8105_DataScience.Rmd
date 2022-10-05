@@ -20,15 +20,27 @@ options(tibble.print_min = 5)
 
 ```
 
-
 BRINGING IN OUR DATASET
 
 ```{r}
 
 nyc_transit_data = 
   read_csv(
-    "./NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
-  janitor::clean_names()
+    "./NYC_Transit_Subway_Entrance_And_Exit_Data.csv",
+  col_types = cols(Route8 = "c", Route9 = "c", Route10 = "c",     Route11 = "c"))%>%
+  janitor::clean_names() %>%
+  select(
+    line,
+    station_name,
+    station_latitude,
+    station_longitude,
+    contains("Route"),
+    entry,
+    vending,
+    entrance_type,
+    ada)%>%
+   mutate(
+     entry = ifelse(entry == "YES", TRUE, FALSE))
 
 skimr::skim(nyc_transit_data)
 
