@@ -15,7 +15,7 @@ LOADING PACKAGES AND SETTING PRINT OPTIONS FOR TIBBLES
 ```{r, message= FALSE}
 
 library(tidyverse)
-library(dbplyr)
+library(readxl)
 options(tibble.print_min = 5)
 
 ```
@@ -25,8 +25,11 @@ BRINGING IN OUR DATASET
 
 ```{r}
 
-nyc_transit_data = read_csv(file = "./NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+nyc_transit_data = 
+  read_csv(
+    "./NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
+  janitor::clean_names()
 
-nyc_transit_data
+skimr::skim(nyc_transit_data)
 
 ```
