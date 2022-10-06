@@ -108,7 +108,9 @@ Mr. Trash Wheel
 trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
     sheet = "Mr. Trash Wheel") %>%
       janitor::clean_names() %>%
-        drop_na (dumpster)
+        drop_na (dumpster) %>%
+           mutate (join = "a") 
+        
 
 trash_wheel_df
   
@@ -120,11 +122,26 @@ Professor Trash Wheel
 p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
     sheet = "Professor Trash Wheel") %>%
       janitor::clean_names() %>%
-        drop_na (dumpster)
-         
+        drop_na (dumpster) %>%
+          mutate (join = "b") 
+        
+        
+ p_trash_wheel_df     
   
-p_trash_wheel_df
+
 ```
-?read_excel
+_
+
 ***Having issues locating "sports_balls"***
 
+
+```{r}
+
+mr_prof_trash_df =
+  bind_rows(trash_wheel_df, p_trash_wheel_df)
+
+mr_prof_trash_df
+skimr::skim(mr_prof_trash_df)
+```
+??read_excel
+?as.character
