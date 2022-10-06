@@ -110,12 +110,14 @@ trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
     sheet = "Mr. Trash Wheel") %>%
       janitor::clean_names() %>%
         drop_na (dumpster) %>%
-           mutate (join = "a") 
-        
+           mutate (join = "a") %>%
+              mutate(year= as.numeric(year)) %>%
+                round(sports_ball, digits = 0)
 
 trash_wheel_df
   
 ```
+
 Professor Trash Wheel
 
 ``` {r}
@@ -125,6 +127,7 @@ p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
       janitor::clean_names() %>%
         drop_na (dumpster) %>%
           mutate (join = "b") 
+  
         
         
  p_trash_wheel_df     
@@ -146,6 +149,7 @@ mr_prof_trash_df
 ```
 
 Finding total weight collected by Professor Trash Wheel
+
 ```{r}
 
 mr_prof_trash_df %>%
@@ -156,6 +160,7 @@ mr_prof_trash_df %>%
 ```
 
 Finding total number of sports balls collected by Mr. Trash Wheel in 2020
+
 ```{r}
 
 mr_prof_trash_df %>%
@@ -164,6 +169,7 @@ mr_prof_trash_df %>%
       sum()
 
 ```
+
 
 _This dataset has 641 observations and 17 variables. Key varaibales include date of trash collection, and key stats about weight of trash and types of trash collected. The amount of trash collected by Professor Trash Wheel from 2017 to 2022 totals to 190.12 tons. The total amount of sports balls collected by Mr. Trash Wheel in 2020 is 856._
 
@@ -239,7 +245,8 @@ final_df =
 
 final_df
 
-skimr::skim(final_df)
+range(final_df$year)
 
 ```
 
+This dataset contain information on date, the break down of current American leaders by political party on that given date, what the S&P 500 closed at that day, and what the unemployment rate was. The dimensions are 12x822 and the years covered range from 1947-2015.
