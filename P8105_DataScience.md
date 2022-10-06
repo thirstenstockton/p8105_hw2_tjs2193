@@ -263,4 +263,6 @@ mr_prof_trash_df %>%
 include date of trash collection, and key stats about weight of trash
 and types of trash collected. The amount of trash collected by Professor
 Trash Wheel from 2017 to 2022 totals to 190.12 tons. The total amount of
-sports balls collected by Mr. Trash Wheel is 856. *
+sports balls collected by Mr. Trash Wheel is 856.*
+
+# Problem 3
