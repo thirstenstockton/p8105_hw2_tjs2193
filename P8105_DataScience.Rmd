@@ -169,7 +169,7 @@ _This dataset has 641 observations and 17 variables. Key varaibales include date
 
 # Problem 3
 
-Cleaning pols-month data
+***Cleaning pols-month data***
 ```{r}
 
 politician_df = 
@@ -179,14 +179,16 @@ politician_df =
     mutate( month = month.name[as.numeric(month)]) %>%
       mutate( president = recode(prez_gop, "0 " =  "dem", "1" =           "gop") ) %>%
             select(-prez_gop ) %>%
-              select(-prez_dem)
+              select(-prez_dem) %>%
+                select(-day) %>%
+                  mutate(year= as.numeric(year))
 
 
 politician_df
 
 ```
 
-Cleaning SNP
+***Cleaning SNP***
 
 ```{r}
 
@@ -195,7 +197,8 @@ snp_df =
     "./fivethirtyeight_datasets/snp.csv") %>%
    mutate(date=mdy(date)) %>%
   separate(date, sep = "-", into = c("year", "month", "day")) %>%
-    mutate( month = month.name[as.numeric(month)]) 
+    mutate( month = month.name[as.numeric(month)]) %>%
+      mutate(year= as.numeric(year))
         
         
 
@@ -204,19 +207,39 @@ snp_df
 
 ```
 
-Tidying Uneployment data
+***Tidying Unemployment data***
 
 ```{r}
 
-snp_df = 
+unemp_df = 
   read_csv(
     "./fivethirtyeight_datasets/unemployment.csv") %>%
         pivot_longer(
           Jan:Dec,
-          names_to = "Month",
-          values_to = "Unemployment %" )
+          names_to = "month",
+          values_to = "Unemployment %" ) %>% 
+            rename(year=Year)
 
-snp_df
-        
+unemp_df
+
   
 ```
+
+***Final merge***
+
+```{r}
+
+prep_df =
+  left_join(politician_df, snp_df, by=c("year", "month"))
+
+prep_df
+
+final_df =
+  left_join(prep_df, unemp_df, by=c("year","month"))
+
+final_df
+
+skimr::skim(final_df)
+
+```
+

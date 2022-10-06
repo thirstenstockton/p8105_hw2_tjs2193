@@ -275,7 +275,7 @@ sports balls collected by Mr. Trash Wheel in 2020 is 856.*
 
 # Problem 3
 
-Cleaning pols-month data
+***Cleaning pols-month data***
 
 ``` r
 politician_df = 
@@ -285,7 +285,9 @@ politician_df =
     mutate( month = month.name[as.numeric(month)]) %>%
       mutate( president = recode(prez_gop, "0 " =  "dem", "1" =           "gop") ) %>%
             select(-prez_gop ) %>%
-              select(-prez_dem)
+              select(-prez_dem) %>%
+                select(-day) %>%
+                  mutate(year= as.numeric(year))
 ```
 
     ## Rows: 822 Columns: 9
@@ -304,18 +306,18 @@ politician_df =
 politician_df
 ```
 
-    ## # A tibble: 822 × 10
-    ##   year  month    day   gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem president
-    ##   <chr> <chr>    <chr>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>    
-    ## 1 1947  January  15         23      51     253      23      45     198 dem      
-    ## 2 1947  February 15         23      51     253      23      45     198 dem      
-    ## 3 1947  March    15         23      51     253      23      45     198 dem      
-    ## 4 1947  April    15         23      51     253      23      45     198 dem      
-    ## 5 1947  May      15         23      51     253      23      45     198 dem      
+    ## # A tibble: 822 × 9
+    ##    year month    gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem president
+    ##   <dbl> <chr>      <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>    
+    ## 1  1947 January       23      51     253      23      45     198 dem      
+    ## 2  1947 February      23      51     253      23      45     198 dem      
+    ## 3  1947 March         23      51     253      23      45     198 dem      
+    ## 4  1947 April         23      51     253      23      45     198 dem      
+    ## 5  1947 May           23      51     253      23      45     198 dem      
     ## # … with 817 more rows
     ## # ℹ Use `print(n = ...)` to see more rows
 
-Cleaning SNP
+***Cleaning SNP***
 
 ``` r
 snp_df = 
@@ -323,7 +325,8 @@ snp_df =
     "./fivethirtyeight_datasets/snp.csv") %>%
    mutate(date=mdy(date)) %>%
   separate(date, sep = "-", into = c("year", "month", "day")) %>%
-    mutate( month = month.name[as.numeric(month)]) 
+    mutate( month = month.name[as.numeric(month)]) %>%
+      mutate(year= as.numeric(year))
 ```
 
     ## Rows: 787 Columns: 2
@@ -340,26 +343,27 @@ snp_df
 ```
 
     ## # A tibble: 787 × 4
-    ##   year  month day   close
-    ##   <chr> <chr> <chr> <dbl>
-    ## 1 2015  July  01    2080.
-    ## 2 2015  June  01    2063.
-    ## 3 2015  May   01    2107.
-    ## 4 2015  April 01    2086.
-    ## 5 2015  March 02    2068.
+    ##    year month day   close
+    ##   <dbl> <chr> <chr> <dbl>
+    ## 1  2015 July  01    2080.
+    ## 2  2015 June  01    2063.
+    ## 3  2015 May   01    2107.
+    ## 4  2015 April 01    2086.
+    ## 5  2015 March 02    2068.
     ## # … with 782 more rows
     ## # ℹ Use `print(n = ...)` to see more rows
 
-Tidying Uneployment data
+***Tidying Unemployment data***
 
 ``` r
-snp_df = 
+unemp_df = 
   read_csv(
     "./fivethirtyeight_datasets/unemployment.csv") %>%
         pivot_longer(
           Jan:Dec,
-          names_to = "Month",
-          values_to = "Unemployment %" )
+          names_to = "month",
+          values_to = "Unemployment %" ) %>% 
+            rename(year=Year)
 ```
 
     ## Rows: 68 Columns: 13
@@ -371,11 +375,11 @@ snp_df =
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-snp_df
+unemp_df
 ```
 
     ## # A tibble: 816 × 3
-    ##    Year Month `Unemployment %`
+    ##    year month `Unemployment %`
     ##   <dbl> <chr>            <dbl>
     ## 1  1948 Jan                3.4
     ## 2  1948 Feb                3.8
@@ -384,3 +388,82 @@ snp_df
     ## 5  1948 May                3.5
     ## # … with 811 more rows
     ## # ℹ Use `print(n = ...)` to see more rows
+
+***Final merge***
+
+``` r
+prep_df =
+  left_join(politician_df, snp_df, by=c("year", "month"))
+
+prep_df
+```
+
+    ## # A tibble: 822 × 11
+    ##    year month    gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem president day  
+    ##   <dbl> <chr>      <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>     <chr>
+    ## 1  1947 January       23      51     253      23      45     198 dem       <NA> 
+    ## 2  1947 February      23      51     253      23      45     198 dem       <NA> 
+    ## 3  1947 March         23      51     253      23      45     198 dem       <NA> 
+    ## 4  1947 April         23      51     253      23      45     198 dem       <NA> 
+    ## 5  1947 May           23      51     253      23      45     198 dem       <NA> 
+    ## # … with 817 more rows, and 1 more variable: close <dbl>
+    ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
+
+``` r
+final_df =
+  left_join(prep_df, unemp_df, by=c("year","month"))
+
+final_df
+```
+
+    ## # A tibble: 822 × 12
+    ##    year month    gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem president day  
+    ##   <dbl> <chr>      <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>     <chr>
+    ## 1  1947 January       23      51     253      23      45     198 dem       <NA> 
+    ## 2  1947 February      23      51     253      23      45     198 dem       <NA> 
+    ## 3  1947 March         23      51     253      23      45     198 dem       <NA> 
+    ## 4  1947 April         23      51     253      23      45     198 dem       <NA> 
+    ## 5  1947 May           23      51     253      23      45     198 dem       <NA> 
+    ## # … with 817 more rows, and 2 more variables: close <dbl>,
+    ## #   `Unemployment %` <dbl>
+    ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
+
+``` r
+skimr::skim(final_df)
+```
+
+|                                                  |          |
+|:-------------------------------------------------|:---------|
+| Name                                             | final_df |
+| Number of rows                                   | 822      |
+| Number of columns                                | 12       |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |          |
+| Column type frequency:                           |          |
+| character                                        | 3        |
+| numeric                                          | 9        |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |          |
+| Group variables                                  | None     |
+
+Data summary
+
+**Variable type: character**
+
+| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
+|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
+| month         |         0 |          1.00 |   3 |   9 |     0 |       12 |          0 |
+| president     |         5 |          0.99 |   3 |   3 |     0 |        2 |          0 |
+| day           |       264 |          0.68 |   2 |   2 |     0 |        4 |          0 |
+
+**Variable type: numeric**
+
+| skim_variable  | n_missing | complete_rate |    mean |     sd |      p0 |     p25 |     p50 |     p75 |    p100 | hist  |
+|:---------------|----------:|--------------:|--------:|-------:|--------:|--------:|--------:|--------:|--------:|:------|
+| year           |         0 |          1.00 | 1980.75 |  19.79 | 1947.00 | 1964.00 | 1981.00 | 1998.00 | 2015.00 | ▇▇▇▇▇ |
+| gov_gop        |         0 |          1.00 |   22.48 |   5.68 |   12.00 |   18.00 |   22.00 |   28.00 |   34.00 | ▆▆▇▅▅ |
+| sen_gop        |         0 |          1.00 |   46.10 |   6.38 |   32.00 |   42.00 |   46.00 |   51.00 |   56.00 | ▃▃▇▇▇ |
+| rep_gop        |         0 |          1.00 |  194.92 |  29.24 |  141.00 |  176.00 |  195.00 |  222.00 |  253.00 | ▃▇▆▃▅ |
+| gov_dem        |         0 |          1.00 |   27.20 |   5.94 |   17.00 |   22.00 |   28.00 |   32.00 |   41.00 | ▆▅▇▆▂ |
+| sen_dem        |         0 |          1.00 |   54.41 |   7.37 |   44.00 |   48.00 |   53.00 |   58.00 |   71.00 | ▇▆▇▃▂ |
+| rep_dem        |         0 |          1.00 |  244.97 |  31.37 |  188.00 |  211.00 |  250.00 |  268.00 |  301.00 | ▇▂▇▇▅ |
+| close          |       264 |          0.68 |  643.34 | 561.55 |   63.54 |  114.69 |  413.37 | 1146.78 | 2107.39 | ▇▁▃▂▁ |
+| Unemployment % |       754 |          0.08 |    5.82 |   1.70 |    2.50 |    4.60 |    5.60 |    7.10 |   10.10 | ▃▇▆▅▂ |
