@@ -365,6 +365,7 @@ unemp_df =
           Jan:Dec,
           names_to = "month",
           values_to = "Unemployment %" ) %>% 
+            mutate(month = plyr::mapvalues(month, from =       month.abb, to = month.name))  %>% 
             rename(year=Year)
 ```
 
@@ -381,13 +382,13 @@ unemp_df
 ```
 
     ## # A tibble: 816 × 3
-    ##    year month `Unemployment %`
-    ##   <dbl> <chr>            <dbl>
-    ## 1  1948 Jan                3.4
-    ## 2  1948 Feb                3.8
-    ## 3  1948 Mar                4  
-    ## 4  1948 Apr                3.9
-    ## 5  1948 May                3.5
+    ##    year month    `Unemployment %`
+    ##   <dbl> <chr>               <dbl>
+    ## 1  1948 January               3.4
+    ## 2  1948 February              3.8
+    ## 3  1948 March                 4  
+    ## 4  1948 April                 3.9
+    ## 5  1948 May                   3.5
     ## # … with 811 more rows
     ## # ℹ Use `print(n = ...)` to see more rows
 
@@ -435,6 +436,46 @@ range(final_df$year)
 ```
 
     ## [1] 1947 2015
+
+``` r
+skimr::skim(final_df)
+```
+
+|                                                  |          |
+|:-------------------------------------------------|:---------|
+| Name                                             | final_df |
+| Number of rows                                   | 822      |
+| Number of columns                                | 12       |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |          |
+| Column type frequency:                           |          |
+| character                                        | 3        |
+| numeric                                          | 9        |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |          |
+| Group variables                                  | None     |
+
+Data summary
+
+**Variable type: character**
+
+| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
+|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
+| month         |         0 |          1.00 |   3 |   9 |     0 |       12 |          0 |
+| president     |         5 |          0.99 |   3 |   3 |     0 |        2 |          0 |
+| day           |       264 |          0.68 |   2 |   2 |     0 |        4 |          0 |
+
+**Variable type: numeric**
+
+| skim_variable  | n_missing | complete_rate |    mean |     sd |      p0 |     p25 |     p50 |     p75 |    p100 | hist  |
+|:---------------|----------:|--------------:|--------:|-------:|--------:|--------:|--------:|--------:|--------:|:------|
+| year           |         0 |          1.00 | 1980.75 |  19.79 | 1947.00 | 1964.00 | 1981.00 | 1998.00 | 2015.00 | ▇▇▇▇▇ |
+| gov_gop        |         0 |          1.00 |   22.48 |   5.68 |   12.00 |   18.00 |   22.00 |   28.00 |   34.00 | ▆▆▇▅▅ |
+| sen_gop        |         0 |          1.00 |   46.10 |   6.38 |   32.00 |   42.00 |   46.00 |   51.00 |   56.00 | ▃▃▇▇▇ |
+| rep_gop        |         0 |          1.00 |  194.92 |  29.24 |  141.00 |  176.00 |  195.00 |  222.00 |  253.00 | ▃▇▆▃▅ |
+| gov_dem        |         0 |          1.00 |   27.20 |   5.94 |   17.00 |   22.00 |   28.00 |   32.00 |   41.00 | ▆▅▇▆▂ |
+| sen_dem        |         0 |          1.00 |   54.41 |   7.37 |   44.00 |   48.00 |   53.00 |   58.00 |   71.00 | ▇▆▇▃▂ |
+| rep_dem        |         0 |          1.00 |  244.97 |  31.37 |  188.00 |  211.00 |  250.00 |  268.00 |  301.00 | ▇▂▇▇▅ |
+| close          |       264 |          0.68 |  643.34 | 561.55 |   63.54 |  114.69 |  413.37 | 1146.78 | 2107.39 | ▇▁▃▂▁ |
+| Unemployment % |        12 |          0.99 |    5.83 |   1.65 |    2.50 |    4.70 |    5.60 |    6.90 |   10.80 | ▃▇▅▂▁ |
 
 This dataset contain information on date, the break down of current
 American leaders by political party on that given date, what the S&P 500

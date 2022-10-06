@@ -223,6 +223,7 @@ unemp_df =
           Jan:Dec,
           names_to = "month",
           values_to = "Unemployment %" ) %>% 
+            mutate(month = plyr::mapvalues(month, from =       month.abb, to = month.name))  %>% 
             rename(year=Year)
 
 unemp_df
@@ -245,6 +246,8 @@ final_df =
 final_df
 
 range(final_df$year)
+
+skimr::skim(final_df)
 
 ```
 
