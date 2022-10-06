@@ -133,6 +133,7 @@ p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
 
 ***Having issues locating "sports_balls"***
 
+Combining datasets
 
 ```{r}
 
@@ -143,6 +144,7 @@ mr_prof_trash_df
 
 ```
 
+Finding total weight collected by Professor Trash Wheel
 ```{r}
 
 mr_prof_trash_df %>%
@@ -152,6 +154,7 @@ mr_prof_trash_df %>%
 
 ```
 
+Finding total number of sports balls collected by Mr. Trash Wheel in 2020
 ```{r}
 
 mr_prof_trash_df %>%
@@ -161,11 +164,33 @@ mr_prof_trash_df %>%
 
 ```
 
-
-
-
-_This dataset has 641 observations and 17 variables. Key varaibales include date of trash collection, and key stats about weight of trash and types of trash collected. The amount of trash collected by Professor Trash Wheel from 2017 to 2022 totals to 190.12 tons. The total amount of sports balls collected by Mr. Trash Wheel is 856._
+_This dataset has 641 observations and 17 variables. Key varaibales include date of trash collection, and key stats about weight of trash and types of trash collected. The amount of trash collected by Professor Trash Wheel from 2017 to 2022 totals to 190.12 tons. The total amount of sports balls collected by Mr. Trash Wheel in 2020 is 856._
 
 # Problem 3
 
 
+```{r}
+
+politician_df = 
+  read_csv(
+    "./fivethirtyeight_datasets/pols-month.csv") %>%
+  separate(mon, sep = "-", into = c("month", "day", "year")) %>%
+    mutate( month = month.name[as.numeric(month)]) %>%
+      mutate( president = recode(prez_gop, "0 " =  "dem", "1" =           "gop") ) %>%
+            select(-prez_gop ) %>%
+              select(-prez_dem)
+            
+  
+
+ls(politician_df)
+
+
+politician_df
+
+skimr::skim(politician_df)
+
+```
+
+?month.name
+
+?read.table

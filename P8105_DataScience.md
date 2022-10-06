@@ -219,6 +219,8 @@ p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
 
 ***Having issues locating “sports_balls”***
 
+Combining datasets
+
 ``` r
 mr_prof_trash_df =
   bind_rows(trash_wheel_df, p_trash_wheel_df)
@@ -241,6 +243,8 @@ mr_prof_trash_df
     ## #   ³​polystyrene
     ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
+Finding total weight collected by Professor Trash Wheel
+
 ``` r
 mr_prof_trash_df %>%
   filter( join == "b" ) %>%
@@ -249,6 +253,9 @@ mr_prof_trash_df %>%
 ```
 
     ## [1] 190.12
+
+Finding total number of sports balls collected by Mr. Trash Wheel in
+2020
 
 ``` r
 mr_prof_trash_df %>%
@@ -263,6 +270,93 @@ mr_prof_trash_df %>%
 include date of trash collection, and key stats about weight of trash
 and types of trash collected. The amount of trash collected by Professor
 Trash Wheel from 2017 to 2022 totals to 190.12 tons. The total amount of
-sports balls collected by Mr. Trash Wheel is 856.*
+sports balls collected by Mr. Trash Wheel in 2020 is 856.*
 
 # Problem 3
+
+``` r
+politician_df = 
+  read_csv(
+    "./fivethirtyeight_datasets/pols-month.csv") %>%
+  separate(mon, sep = "-", into = c("month", "day", "year")) %>%
+    mutate( month = month.name[as.numeric(month)]) %>%
+      mutate( president = recode(prez_gop, "0 " =  "dem", "1" =           "gop") ) %>%
+            select(-prez_gop ) %>%
+              select(-prez_dem)
+```
+
+    ## Rows: 823 Columns: 9
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): mon
+    ## dbl (8): prez_gop, gov_gop, sen_gop, rep_gop, prez_dem, gov_dem, sen_dem, re...
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+    ## Warning: Unreplaced values treated as NA as `.x` is not compatible.
+    ## Please specify replacements exhaustively or supply `.default`.
+
+``` r
+ls(politician_df)
+```
+
+    ##  [1] "day"       "gov_dem"   "gov_gop"   "month"     "president" "rep_dem"  
+    ##  [7] "rep_gop"   "sen_dem"   "sen_gop"   "year"
+
+``` r
+politician_df
+```
+
+    ## # A tibble: 823 × 10
+    ##   month    day   year  gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem president
+    ##   <chr>    <chr> <chr>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>    
+    ## 1 January  15    1947       23      51     253      23      45     198 dem      
+    ## 2 February 15    1947       23      51     253      23      45     198 dem      
+    ## 3 March    15    1947       23      51     253      23      45     198 dem      
+    ## 4 April    15    1947       23      51     253      23      45     198 dem      
+    ## 5 May      15    1947       23      51     253      23      45     198 dem      
+    ## # … with 818 more rows
+    ## # ℹ Use `print(n = ...)` to see more rows
+
+``` r
+skimr::skim(politician_df)
+```
+
+|                                                  |               |
+|:-------------------------------------------------|:--------------|
+| Name                                             | politician_df |
+| Number of rows                                   | 823           |
+| Number of columns                                | 10            |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |               |
+| Column type frequency:                           |               |
+| character                                        | 4             |
+| numeric                                          | 6             |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |               |
+| Group variables                                  | None          |
+
+Data summary
+
+**Variable type: character**
+
+| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
+|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
+| month         |         1 |          1.00 |   3 |   9 |     0 |       12 |          0 |
+| day           |         1 |          1.00 |   2 |   2 |     0 |        1 |          0 |
+| year          |         1 |          1.00 |   4 |   4 |     0 |       69 |          0 |
+| president     |         6 |          0.99 |   3 |   3 |     0 |        2 |          0 |
+
+**Variable type: numeric**
+
+| skim_variable | n_missing | complete_rate |   mean |    sd |  p0 | p25 | p50 | p75 | p100 | hist  |
+|:--------------|----------:|--------------:|-------:|------:|----:|----:|----:|----:|-----:|:------|
+| gov_gop       |         1 |             1 |  22.48 |  5.68 |  12 |  18 |  22 |  28 |   34 | ▆▆▇▅▅ |
+| sen_gop       |         1 |             1 |  46.10 |  6.38 |  32 |  42 |  46 |  51 |   56 | ▃▃▇▇▇ |
+| rep_gop       |         1 |             1 | 194.92 | 29.24 | 141 | 176 | 195 | 222 |  253 | ▃▇▆▃▅ |
+| gov_dem       |         1 |             1 |  27.20 |  5.94 |  17 |  22 |  28 |  32 |   41 | ▆▅▇▆▂ |
+| sen_dem       |         1 |             1 |  54.41 |  7.37 |  44 |  48 |  53 |  58 |   71 | ▇▆▇▃▂ |
+| rep_dem       |         1 |             1 | 244.97 | 31.37 | 188 | 211 | 250 | 268 |  301 | ▇▂▇▇▅ |
+
+?month.name
+
+?read.table
