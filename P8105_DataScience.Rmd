@@ -130,7 +130,6 @@ p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
   
 
 ```
-_
 
 ***Having issues locating "sports_balls"***
 
@@ -141,7 +140,28 @@ mr_prof_trash_df =
   bind_rows(trash_wheel_df, p_trash_wheel_df)
 
 mr_prof_trash_df
-skimr::skim(mr_prof_trash_df)
+
 ```
-??read_excel
-?as.character
+
+```{r}
+
+mr_prof_trash_df %>%
+  filter( join == "b" ) %>%
+    select(weight_tons) %>%
+      sum()
+
+```
+
+```{r}
+
+mr_prof_trash_df %>%
+  filter( join == "a", year == 2020 ) %>%
+    select(sports_balls) %>%
+      sum()
+
+```
+
+
+
+
+_This dataset has 641 observations and 17 variables. Key varaibales include date of trash collection, and key stats about weight of trash and types of trash collected. The amount of trash collected by Professor Trash Wheel from 2017 to 2022 totals to 190.12 tons. The total amount of sports balls collected by Mr. Trash Wheel is 856.  _

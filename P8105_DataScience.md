@@ -217,8 +217,6 @@ p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
     ## #   ¹​weight_tons, ²​volume_cubic_yards, ³​plastic_bottles, ⁴​polystyrene
     ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
-\_
-
 ***Having issues locating “sports_balls”***
 
 ``` r
@@ -244,60 +242,25 @@ mr_prof_trash_df
     ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
 ``` r
-skimr::skim(mr_prof_trash_df)
+mr_prof_trash_df %>%
+  filter( join == "b" ) %>%
+    select(weight_tons) %>%
+      sum()
 ```
 
-|                                                  |                  |
-|:-------------------------------------------------|:-----------------|
-| Name                                             | mr_prof_trash_df |
-| Number of rows                                   | 641              |
-| Number of columns                                | 17               |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |                  |
-| Column type frequency:                           |                  |
-| character                                        | 2                |
-| logical                                          | 2                |
-| numeric                                          | 12               |
-| POSIXct                                          | 1                |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |                  |
-| Group variables                                  | None             |
+    ## [1] 190.12
 
-Data summary
+``` r
+mr_prof_trash_df %>%
+  filter( join == "a", year == 2020 ) %>%
+    select(sports_balls) %>%
+      sum()
+```
 
-**Variable type: character**
+    ## [1] 856
 
-| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
-|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
-| month         |         0 |             1 |   3 |   9 |     0 |       13 |          0 |
-| join          |         0 |             1 |   1 |   1 |     0 |        2 |          0 |
-
-**Variable type: logical**
-
-| skim_variable | n_missing | complete_rate | mean | count |
-|:--------------|----------:|--------------:|-----:|:------|
-| x15           |       641 |             0 |  NaN | :     |
-| x16           |       641 |             0 |  NaN | :     |
-
-**Variable type: numeric**
-
-| skim_variable      | n_missing | complete_rate |     mean |       sd |      p0 |     p25 |     p50 |      p75 |      p100 | hist  |
-|:-------------------|----------:|--------------:|---------:|---------:|--------:|--------:|--------:|---------:|----------:|:------|
-| dumpster           |         0 |          1.00 |   240.78 |   166.88 |    1.00 |   81.00 |  227.00 |   387.00 |    547.00 | ▇▅▅▅▅ |
-| year               |         0 |          1.00 |  2018.14 |     2.31 | 2014.00 | 2016.00 | 2018.00 |  2020.00 |   2022.00 | ▆▆▆▇▆ |
-| weight_tons        |         0 |          1.00 |     3.02 |     0.84 |    0.61 |    2.48 |    3.08 |     3.62 |      5.62 | ▁▅▇▅▁ |
-| volume_cubic_yards |         0 |          1.00 |    15.22 |     1.44 |    6.00 |   15.00 |   15.00 |    15.00 |     20.00 | ▁▁▁▇▁ |
-| plastic_bottles    |         0 |          1.00 |  2464.81 |  1817.94 |  210.00 | 1110.00 | 2110.00 |  3100.00 |   9830.00 | ▇▆▁▁▁ |
-| polystyrene        |         0 |          1.00 |  2088.81 |  1990.25 |   48.00 |  780.00 | 1460.00 |  2870.00 |  11528.00 | ▇▃▁▁▁ |
-| cigarette_butts    |         0 |          1.00 | 19663.80 | 28187.00 |  900.00 | 4400.00 | 8000.00 | 23000.00 | 310000.00 | ▇▁▁▁▁ |
-| glass_bottles      |         0 |          1.00 |    20.71 |    15.82 |    0.00 |    9.00 |   18.00 |    28.00 |    110.00 | ▇▃▁▁▁ |
-| grocery_bags       |         0 |          1.00 |  1217.66 |  1634.36 |   24.00 |  360.00 |  780.00 |  1480.00 |  13450.00 | ▇▁▁▁▁ |
-| chip_bags          |         0 |          1.00 |  2405.54 |  3050.01 |  180.00 |  800.00 | 1340.00 |  2684.00 |  20100.00 | ▇▁▁▁▁ |
-| sports_balls       |        94 |          0.85 |    12.58 |     9.27 |    0.00 |    6.00 |   11.00 |    18.00 |     56.00 | ▇▅▂▁▁ |
-| homes_powered      |        73 |          0.89 |    44.11 |    20.73 |    0.00 |   34.67 |   49.00 |    57.50 |     93.67 | ▂▃▇▅▁ |
-
-**Variable type: POSIXct**
-
-| skim_variable | n_missing | complete_rate | min        | max        | median     | n_unique |
-|:--------------|----------:|--------------:|:-----------|:-----------|:-----------|---------:|
-| date          |         0 |             1 | 1900-01-20 | 2022-07-29 | 2018-08-09 |      359 |
-
-??read_excel ?as.character
+*This dataset has 641 observations and 17 variables. Key varaibales
+include date of trash collection, and key stats about weight of trash
+and types of trash collected. The amount of trash collected by Professor
+Trash Wheel from 2017 to 2022 totals to 190.12 tons. The total amount of
+sports balls collected by Mr. Trash Wheel is 856. *
