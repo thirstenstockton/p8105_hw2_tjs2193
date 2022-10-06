@@ -204,6 +204,19 @@ snp_df
 
 ```
 
-??lubridate
+Tidying Uneployment data
 
+```{r}
 
+snp_df = 
+  read_csv(
+    "./fivethirtyeight_datasets/unemployment.csv") %>%
+        pivot_longer(
+          Jan:Dec,
+          names_to = "Month",
+          values_to = "Unemployment %" )
+
+snp_df
+        
+  
+```

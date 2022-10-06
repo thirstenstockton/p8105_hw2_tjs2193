@@ -350,4 +350,37 @@ snp_df
     ## # … with 782 more rows
     ## # ℹ Use `print(n = ...)` to see more rows
 
-??lubridate
+Tidying Uneployment data
+
+``` r
+snp_df = 
+  read_csv(
+    "./fivethirtyeight_datasets/unemployment.csv") %>%
+        pivot_longer(
+          Jan:Dec,
+          names_to = "Month",
+          values_to = "Unemployment %" )
+```
+
+    ## Rows: 68 Columns: 13
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl (13): Year, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+snp_df
+```
+
+    ## # A tibble: 816 × 3
+    ##    Year Month `Unemployment %`
+    ##   <dbl> <chr>            <dbl>
+    ## 1  1948 Jan                3.4
+    ## 2  1948 Feb                3.8
+    ## 3  1948 Mar                4  
+    ## 4  1948 Apr                3.9
+    ## 5  1948 May                3.5
+    ## # … with 811 more rows
+    ## # ℹ Use `print(n = ...)` to see more rows
