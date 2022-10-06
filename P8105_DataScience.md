@@ -171,7 +171,7 @@ trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
       janitor::clean_names() %>%
         drop_na (dumpster) %>%
            mutate (join = "a") %>%
-              mutate(year= as.numeric(year))
+              mutate(year= as.numeric(year)) 
 
 trash_wheel_df
 ```
@@ -219,7 +219,8 @@ p_trash_wheel_df = read_excel("./Trash Wheel Collection Data.xlsx",
     ## #   ¹​weight_tons, ²​volume_cubic_yards, ³​plastic_bottles, ⁴​polystyrene
     ## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 
-***Having issues locating “sports_balls”***
+***Having issues locating “sports_balls” in code, but variable is
+rounded and is an integer***
 
 Combining datasets
 
