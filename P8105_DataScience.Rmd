@@ -16,6 +16,7 @@ LOADING PACKAGES AND SETTING PRINT OPTIONS FOR TIBBLES
 
 library(tidyverse)
 library(readxl)
+library(lubridate)
 options(tibble.print_min = 5)
 
 ```
@@ -168,29 +169,41 @@ _This dataset has 641 observations and 17 variables. Key varaibales include date
 
 # Problem 3
 
-
+Cleaning pols-month data
 ```{r}
 
 politician_df = 
   read_csv(
     "./fivethirtyeight_datasets/pols-month.csv") %>%
-  separate(mon, sep = "-", into = c("month", "day", "year")) %>%
+  separate(mon, sep = "-", into = c("year", "month", "day")) %>%
     mutate( month = month.name[as.numeric(month)]) %>%
       mutate( president = recode(prez_gop, "0 " =  "dem", "1" =           "gop") ) %>%
             select(-prez_gop ) %>%
               select(-prez_dem)
-            
-  
-
-ls(politician_df)
 
 
 politician_df
 
-skimr::skim(politician_df)
+```
+
+Cleaning SNP
+
+```{r}
+
+snp_df = 
+  read_csv(
+    "./fivethirtyeight_datasets/snp.csv") %>%
+   mutate(date=mdy(date)) %>%
+  separate(date, sep = "-", into = c("year", "month", "day")) %>%
+    mutate( month = month.name[as.numeric(month)]) 
+        
+        
+
+
+snp_df
 
 ```
 
-?month.name
+??lubridate
 
-?read.table
+

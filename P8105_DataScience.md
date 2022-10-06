@@ -12,6 +12,7 @@ LOADING PACKAGES AND SETTING PRINT OPTIONS FOR TIBBLES
 ``` r
 library(tidyverse)
 library(readxl)
+library(lubridate)
 options(tibble.print_min = 5)
 ```
 
@@ -274,22 +275,24 @@ sports balls collected by Mr. Trash Wheel in 2020 is 856.*
 
 # Problem 3
 
+Cleaning pols-month data
+
 ``` r
 politician_df = 
   read_csv(
     "./fivethirtyeight_datasets/pols-month.csv") %>%
-  separate(mon, sep = "-", into = c("month", "day", "year")) %>%
+  separate(mon, sep = "-", into = c("year", "month", "day")) %>%
     mutate( month = month.name[as.numeric(month)]) %>%
       mutate( president = recode(prez_gop, "0 " =  "dem", "1" =           "gop") ) %>%
             select(-prez_gop ) %>%
               select(-prez_dem)
 ```
 
-    ## Rows: 823 Columns: 9
+    ## Rows: 822 Columns: 9
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
-    ## chr (1): mon
-    ## dbl (8): prez_gop, gov_gop, sen_gop, rep_gop, prez_dem, gov_dem, sen_dem, re...
+    ## dbl  (8): prez_gop, gov_gop, sen_gop, rep_gop, prez_dem, gov_dem, sen_dem, r...
+    ## date (1): mon
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -298,65 +301,53 @@ politician_df =
     ## Please specify replacements exhaustively or supply `.default`.
 
 ``` r
-ls(politician_df)
-```
-
-    ##  [1] "day"       "gov_dem"   "gov_gop"   "month"     "president" "rep_dem"  
-    ##  [7] "rep_gop"   "sen_dem"   "sen_gop"   "year"
-
-``` r
 politician_df
 ```
 
-    ## # A tibble: 823 × 10
-    ##   month    day   year  gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem president
-    ##   <chr>    <chr> <chr>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>    
-    ## 1 January  15    1947       23      51     253      23      45     198 dem      
-    ## 2 February 15    1947       23      51     253      23      45     198 dem      
-    ## 3 March    15    1947       23      51     253      23      45     198 dem      
-    ## 4 April    15    1947       23      51     253      23      45     198 dem      
-    ## 5 May      15    1947       23      51     253      23      45     198 dem      
-    ## # … with 818 more rows
+    ## # A tibble: 822 × 10
+    ##   year  month    day   gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem president
+    ##   <chr> <chr>    <chr>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>    
+    ## 1 1947  January  15         23      51     253      23      45     198 dem      
+    ## 2 1947  February 15         23      51     253      23      45     198 dem      
+    ## 3 1947  March    15         23      51     253      23      45     198 dem      
+    ## 4 1947  April    15         23      51     253      23      45     198 dem      
+    ## 5 1947  May      15         23      51     253      23      45     198 dem      
+    ## # … with 817 more rows
     ## # ℹ Use `print(n = ...)` to see more rows
 
+Cleaning SNP
+
 ``` r
-skimr::skim(politician_df)
+snp_df = 
+  read_csv(
+    "./fivethirtyeight_datasets/snp.csv") %>%
+   mutate(date=mdy(date)) %>%
+  separate(date, sep = "-", into = c("year", "month", "day")) %>%
+    mutate( month = month.name[as.numeric(month)]) 
 ```
 
-|                                                  |               |
-|:-------------------------------------------------|:--------------|
-| Name                                             | politician_df |
-| Number of rows                                   | 823           |
-| Number of columns                                | 10            |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |               |
-| Column type frequency:                           |               |
-| character                                        | 4             |
-| numeric                                          | 6             |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |               |
-| Group variables                                  | None          |
+    ## Rows: 787 Columns: 2
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): date
+    ## dbl (1): close
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
-Data summary
+``` r
+snp_df
+```
 
-**Variable type: character**
+    ## # A tibble: 787 × 4
+    ##   year  month day   close
+    ##   <chr> <chr> <chr> <dbl>
+    ## 1 2015  July  01    2080.
+    ## 2 2015  June  01    2063.
+    ## 3 2015  May   01    2107.
+    ## 4 2015  April 01    2086.
+    ## 5 2015  March 02    2068.
+    ## # … with 782 more rows
+    ## # ℹ Use `print(n = ...)` to see more rows
 
-| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
-|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
-| month         |         1 |          1.00 |   3 |   9 |     0 |       12 |          0 |
-| day           |         1 |          1.00 |   2 |   2 |     0 |        1 |          0 |
-| year          |         1 |          1.00 |   4 |   4 |     0 |       69 |          0 |
-| president     |         6 |          0.99 |   3 |   3 |     0 |        2 |          0 |
-
-**Variable type: numeric**
-
-| skim_variable | n_missing | complete_rate |   mean |    sd |  p0 | p25 | p50 | p75 | p100 | hist  |
-|:--------------|----------:|--------------:|-------:|------:|----:|----:|----:|----:|-----:|:------|
-| gov_gop       |         1 |             1 |  22.48 |  5.68 |  12 |  18 |  22 |  28 |   34 | ▆▆▇▅▅ |
-| sen_gop       |         1 |             1 |  46.10 |  6.38 |  32 |  42 |  46 |  51 |   56 | ▃▃▇▇▇ |
-| rep_gop       |         1 |             1 | 194.92 | 29.24 | 141 | 176 | 195 | 222 |  253 | ▃▇▆▃▅ |
-| gov_dem       |         1 |             1 |  27.20 |  5.94 |  17 |  22 |  28 |  32 |   41 | ▆▅▇▆▂ |
-| sen_dem       |         1 |             1 |  54.41 |  7.37 |  44 |  48 |  53 |  58 |   71 | ▇▆▇▃▂ |
-| rep_dem       |         1 |             1 | 244.97 | 31.37 | 188 | 211 | 250 | 268 |  301 | ▇▂▇▇▅ |
-
-?month.name
-
-?read.table
+??lubridate
